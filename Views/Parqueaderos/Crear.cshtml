@@ -1,0 +1,288 @@
+@using Parqueadero.Models
+@model Parqueadero
+
+@{
+    ViewData["Title"] = "Nuevo Parqueadero";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-5 border-bottom pb-3">
+        <h1 class="h2 text-dark">
+            <i class="fas fa-plus-circle text-primary me-2"></i> Crear **Nuevo Parqueadero**
+        </h1>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+            <i class="fas fa-arrow-left"></i> Volver al Listado
+        </a>
+    </div>
+
+    <div class="card shadow-lg mb-4 border-left-primary">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Datos del Nuevo Establecimiento</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Crear" id="crearParqueaderoForm">
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Nombre" class="control-label fw-bold"></label>
+                            <input asp-for="Nombre" class="form-control form-control-lg" placeholder="Escriba el nombre del parqueadero" required />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="control-label fw-bold">Cantidad de Pisos</label>
+                                    <input type="number" id="CantidadPisos" class="form-control" value="1" min="1" max="50" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="control-label fw-bold">Zonas por Piso</label>
+                                    <input type="number" id="CantidadZonas" class="form-control" value="10" min="1" max="100" required />
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-magic"></i> Se crearán automáticamente los pisos y las zonas indicadas.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="Direccion" class="control-label fw-bold"></label>
+                            <input asp-for="Direccion" class="form-control" id="direccion" placeholder="La dirección se actualizará con la selección del mapa" readonly />
+                            <span asp-validation-for="Direccion" class="text-danger"></span>
+                        </div>
+
+                        @if (User.IsInRole("SuperUsuario"))
+                        {
+                            <div class="form-group mb-3">
+                                <label asp-for="EmpresaId" class="control-label fw-bold">Empresa</label>
+                                <select asp-for="EmpresaId" class="form-control" required>
+                                    <option value="">Cargando empresas...</option>
+                                </select>
+                                <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="EmpresaId" value="@User.FindFirst("EmpresaId").Value">
+                        }
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="control-label fw-bold">Ubicación Geográfica <i class="fas fa-map-marker-alt text-danger"></i></label>
+                            <div class="input-group mb-2 shadow-sm">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Buscar dirección o punto de interés...">
+                                <button class="btn btn-outline-primary" type="button" id="searchButton">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                            <div id="map" style="height: 350px; border-radius: 8px;" class="mb-2 shadow-sm border"></div>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> Use el buscador o haga clic / arrastre el marcador en el mapa para seleccionar la ubicación exacta.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" asp-for="Latitud" id="latitud" />
+                <input type="hidden" asp-for="Longitud" id="longitud" />
+
+                <div class="mt-4 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary btn-lg shadow">
+                        <i class="fas fa-save me-2"></i> Guardar Parqueadero
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.MapsToken&libraries=places"></script>
+    <script>
+        $(document).ready(function () {
+            let map;
+            let marker;
+            let geocoder;
+            let searchBox;
+
+            // --- FUNCIONES DE MAPA Y GEOLOCALIZACIÓN ---
+
+            // Inicializar el mapa
+            function initMap() {
+                // Centramos en una ubicación por defecto (Bogotá)
+                const defaultLocation = { lat: 4.5709, lng: -74.2973 };
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: defaultLocation,
+                    zoom: 13,
+                    mapTypeControl: false, // Estética limpia
+                    streetViewControl: false
+                });
+
+                geocoder = new google.maps.Geocoder();
+
+                // Inicializa el marcador SIN posición (para que no aparezca por defecto)
+                marker = new google.maps.Marker({
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP // Efecto visual al colocarse
+                });
+
+                // Inicializar SearchBox
+                const searchInput = document.getElementById('searchInput');
+                searchBox = new google.maps.places.SearchBox(searchInput);
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(searchInput);
+
+                // Evento de clic en el botón de búsqueda
+                $('#searchButton').click(function() {
+                    const places = searchBox.getPlaces();
+                    if (places && places.length > 0) {
+                        const place = places[0];
+                        map.setCenter(place.geometry.location);
+                        updateMarker(place.geometry.location);
+                        updateAddress(place.formatted_address);
+                    }
+                });
+
+                // Evento de clic en el mapa
+                map.addListener('click', function(e) {
+                    updateMarker(e.latLng);
+                    geocodeLatLng(e.latLng);
+                });
+
+                // Evento de arrastrar el marcador
+                marker.addListener('dragend', function() {
+                    geocodeLatLng(marker.getPosition());
+                });
+
+                // Si hay valores previos en los hidden fields
+                if ($('#latitud').val() && $('#longitud').val()) {
+                    const initialLat = parseFloat($('#latitud').val());
+                    const initialLng = parseFloat($('#longitud').val());
+                    const initialLocation = { lat: initialLat, lng: initialLng };
+                    updateMarker(initialLocation);
+                    map.setCenter(initialLocation);
+                }
+            }
+
+            function updateMarker(latLng) {
+                marker.setPosition(latLng);
+                if (!marker.getMap()) {
+                    marker.setMap(map);
+                }
+                $('#latitud').val(latLng.lat().toFixed(6));
+                $('#longitud').val(latLng.lng().toFixed(6));
+            }
+
+            function updateAddress(address) {
+                $('#direccion').val(address);
+                if (!$('#Direccion').val()) {
+                     $('#Direccion').val(address);
+                }
+            }
+
+            function geocodeLatLng(latLng) {
+                geocoder.geocode({ location: latLng }, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        updateAddress(results[0].formatted_address);
+                    } else {
+                        updateAddress('Dirección no encontrada');
+                        console.error('Geocoder falló debido a: ' + status);
+                    }
+                });
+            }
+
+            // --- CARGA DE EMPRESAS POR AJAX (para usuarios SuperUsuario) ---
+            if ( @Json.Serialize(User.IsInRole("SuperUsuario")) ) {
+                $.get('/api/Empresas')
+                    .done(function(empresas) {
+                        var select = $('#EmpresaId');
+                        select.empty();
+                        select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                        $.each(empresas, function(index, empresa) {
+                            select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                        });
+                    })
+                    .fail(function() {
+                        var select = $('#EmpresaId');
+                        select.empty();
+                        select.append($('<option></option>').val('').text('Error al cargar empresas'));
+                        select.prop('disabled', true);
+                    });
+            }
+
+            // Inicializar el mapa
+            initMap();
+
+            // --- LÓGICA DE SUBMISIÓN DEL FORMULARIO ---
+
+            $('#crearParqueaderoForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Validación de ubicación
+                if (!$('#latitud').val() || !$('#longitud').val()) {
+                    Swal.fire({
+                        title: 'Ubicación Requerida',
+                        text: 'Por favor, use el mapa para seleccionar la ubicación exacta del parqueadero.',
+                        
+                    });
+                    return;
+                }
+
+                if (!$(this).valid()) {
+                    return;
+                }
+
+                const formData = {
+                    nombre: $('#Nombre').val(),
+                    direccion: $('#direccion').val(),
+                    latitud: parseFloat($('#latitud').val()),
+                    longitud: parseFloat($('#longitud').val()),
+                    empresaId: parseInt($('#EmpresaId').val() || 0),
+
+                    // --- AQUÍ ESTÁ EL CAMBIO PARA PISOS Y ZONAS ---
+                    cantidadPisos: parseInt($('#CantidadPisos').val() || 1),
+                    cantidadZonas: parseInt($('#CantidadZonas').val() || 10)
+                    // ----------------------------------------------
+                };
+
+                $.ajax({
+                    url: '/api/Parqueaderos',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (result) {
+                        Swal.fire({
+                            title: '¡Creación Exitosa!',
+                            text: `Parqueadero creado con ${formData.cantidadPisos} pisos y ${formData.cantidadZonas} zonas por piso correctamente.`,
+                            
+                        }).then(() => {
+                            window.location.href = '/Parqueaderos/Index';
+                        });
+                    },
+                    error: function (xhr) {
+                        const errorMsg = xhr.responseJSON?.message || 'Ha ocurrido un error al crear el parqueadero.';
+                        Swal.fire({
+                            title: 'Error',
+                            text: errorMsg,
+                            
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

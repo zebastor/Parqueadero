@@ -1,0 +1,218 @@
+@{
+    ViewData["Title"] = "Gestionar Empresas";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Gestionar Mis Empresas</h1>
+        <a asp-controller="Dashboard" asp-action="Cliente" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+
+    <div class="card shadow mb-4 border-left-success">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-success">Empresas Disponibles para Unirse</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Empresa</th>
+                            <th style="width: 40%;">Seleccionar Plan</th>
+                            <th style="width: 15%;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyEmpresasDisponibles">
+                        <tr><td colspan="3" class="text-center">Cargando empresas disponibles...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4 border-left-primary">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Mis Empresas Registradas</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Plan Actual</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyEmpresasCliente">
+                        <tr><td colspan="3" class="text-center">Cargando tus empresas...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let todasLasEmpresas = [];
+            let misEmpresas = [];
+            let planesDisponibles = [];
+
+            // 1. Cargar datos iniciales
+            cargarDatos();
+
+            function cargarDatos() {
+                // Hacemos 3 peticiones en paralelo
+                Promise.all([
+                    fetch("/api/Empresas").then(r => r.ok ? r.json() : []),
+                    fetch("/api/Usuarios/Cliente/MisEmpresas").then(r => r.ok ? r.json() : []),
+                    fetch("/api/PlanesEspeciales").then(r => r.ok ? r.json() : [])
+                ]).then(([empresas, mis, planes]) => {
+                    todasLasEmpresas = empresas;
+                    misEmpresas = mis || [];
+                    planesDisponibles = planes || [];
+                    renderizarTablas();
+                }).catch(err => {
+                    console.error("Error cargando datos:", err);
+                    Swal.fire("Error", "No se pudieron cargar los datos del servidor", "error");
+                });
+            }
+
+            function renderizarTablas() {
+                const tbodyDisponibles = document.getElementById("tbodyEmpresasDisponibles");
+                const tbodyMis = document.getElementById("tbodyEmpresasCliente");
+
+                tbodyDisponibles.innerHTML = "";
+                tbodyMis.innerHTML = "";
+
+                // -----------------------------------------
+                // A. Renderizar Tabla "Mis Empresas"
+                // -----------------------------------------
+                if (misEmpresas.length === 0) {
+                    tbodyMis.innerHTML = `<tr><td colspan="3" class="text-center text-muted">No estás registrado en ninguna empresa.</td></tr>`;
+                } else {
+                    misEmpresas.forEach(m => {
+                        // m.empresa puede venir nulo si la API no hace include, verificamos
+                        const nombreEmpresa = m.empresa ? m.empresa.nombre : ('Empresa #' + m.empresaId);
+                        const nombrePlan = m.planEspecial ? m.planEspecial.nombre : "Plan Estándar";
+
+                        tbodyMis.innerHTML += `
+                            <tr>
+                                <td class="align-middle font-weight-bold">${nombreEmpresa}</td>
+                                <td class="align-middle"><span class="badge badge-info px-3 py-2" style="font-size:0.9em;">${nombrePlan}</span></td>
+                                <td class="align-middle text-center">
+                                    <button class="btn btn-outline-danger btn-sm" onclick="eliminarEmpresa(${m.empresaId})">
+                                        <i class="fas fa-sign-out-alt"></i> Salir
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                }
+
+                // -----------------------------------------
+                // B. Renderizar Tabla "Empresas Disponibles"
+                // -----------------------------------------
+                // Filtramos: Todas - Mis Empresas = Disponibles
+                const misIds = misEmpresas.map(m => m.empresaId);
+                const disponibles = todasLasEmpresas.filter(e => !misIds.includes(e.id));
+
+                // Preparamos las opciones del select de planes
+                let optionsPlanes = '<option value="">Plan Estándar (Sin costo adicional)</option>';
+                planesDisponibles.forEach(p => {
+                    optionsPlanes += `<option value="${p.id}">${p.nombre} - $${p.costo}</option>`;
+                });
+
+                if (disponibles.length === 0) {
+                    tbodyDisponibles.innerHTML = `<tr><td colspan="3" class="text-center text-success">¡Genial! Ya estás registrado en todas las empresas disponibles.</td></tr>`;
+                } else {
+                    disponibles.forEach(e => {
+                        tbodyDisponibles.innerHTML += `
+                            <tr>
+                                <td class="align-middle font-weight-bold text-dark">${e.nombre}</td>
+                                <td class="align-middle">
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                                        </div>
+                                        <select class="form-control" id="plan-empresa-${e.id}">
+                                            ${optionsPlanes}
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <button class="btn btn-success btn-sm font-weight-bold shadow-sm" onclick="unirseEmpresa(${e.id})">
+                                        <i class="fas fa-plus-circle"></i> Unirme
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                }
+            }
+
+            // -----------------------------------------
+            // Acciones (Globales)
+            // -----------------------------------------
+
+            window.unirseEmpresa = (empresaId) => {
+                const planSelect = document.getElementById(`plan-empresa-${empresaId}`);
+                const planId = planSelect.value;
+
+                // Preparamos el payload. Si planId es vacío, enviamos null
+                const payload = { planEspecialId: planId ? parseInt(planId) : null };
+
+                // Feedback visual de carga
+                Swal.fire({ title: 'Procesando...', text: 'Registrando en la empresa', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+                fetch(`/api/Usuarios/Cliente/Asociarme/${empresaId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                }).then(r => {
+                    if (r.ok) {
+                        Swal.fire("¡Bienvenido!", "Te has unido a la empresa correctamente.", "success");
+                        cargarDatos(); // Recargar tablas para ver los cambios
+                    } else {
+                        // Intentar leer el error del backend
+                        r.json().then(err => {
+                            Swal.fire("Error", err.mensaje || "No se pudo completar el registro.", "error");
+                        }).catch(() => {
+                            Swal.fire("Error", "Ocurrió un error inesperado.", "error");
+                        });
+                    }
+                }).catch(() => Swal.fire("Error", "Fallo de conexión.", "error"));
+            };
+
+            window.eliminarEmpresa = (empresaId) => {
+                Swal.fire({
+                    title: "¿Salir de la empresa?",
+                    text: "Perderás el acceso a los beneficios y reservas asociadas.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: "Sí, salir",
+                    cancelButtonText: "Cancelar"
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        Swal.showLoading();
+                        fetch(`/api/Usuarios/Cliente/Quitar/${empresaId}`, {
+                            method: "DELETE"
+                        }).then(r => {
+                            if (r.ok) {
+                                Swal.fire("Eliminado", "Has salido de la empresa.", "success");
+                                cargarDatos(); // Recargar tablas
+                            } else {
+                                Swal.fire("Error", "No se pudo procesar la solicitud.", "error");
+                            }
+                        });
+                    }
+                });
+            };
+        });
+    </script>
+}

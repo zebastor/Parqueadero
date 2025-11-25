@@ -1,0 +1,369 @@
+@using Parqueadero.Models
+@model Usuario
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Editar Usuario</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <!-- Formulario de edición básica -->
+            <form asp-action="Editar" id="editarUsuarioForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="form-group mb-3">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Correo" class="control-label"></label>
+                    <input asp-for="Correo" class="form-control" id="Correo" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Rol" class="control-label"></label>
+                    <select asp-for="Rol" class="form-control" id="RolSelect" asp-items="ViewBag.Roles">
+                        <option value="">Seleccione un rol</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Trabajador</option>
+                        <option value="3">Cliente</option>
+                    </select>
+                    <span asp-validation-for="Rol" class="text-danger"></span>
+                </div>
+
+                @if (User.IsInRole("SuperUsuario")) {
+                    <div class="form-group mb-3" id="empresaSelectContainer">
+                        <label asp-for="EmpresaId" class="control-label"></label>
+                        <select asp-for="EmpresaId" class="form-control" id="EmpresaIdSelect" asp-items="ViewBag.Empresas">
+                            <option value="">Seleccione una empresa</option>
+                        </select>
+                        <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                    </div>
+                } else {
+                    <input type="hidden" asp-for="EmpresaId" id="EmpresaIdHidden" value="@(User.FindFirst("EmpresaId")?.Value ?? "")"/>
+                }
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios Básicos
+                    </button>
+                </div>
+            </form>
+
+        @* Solo visible para SuperUsuario *@
+@if (User.IsInRole("SuperUsuario"))
+{
+    <!-- Sección específica para Clientes -->
+    <div id="seccionCliente">
+        <hr />
+        <h4>Empresas y Planes del Cliente</h4>
+                
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="nuevaEmpresaSelect">Agregar a Empresa</label>
+                <select class="form-control" id="nuevaEmpresaSelect">
+                    <option value="">Seleccione una empresa</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="nuevoPlanSelect">Plan Especial (opcional)</label>
+                <select class="form-control" id="nuevoPlanSelect">
+                    <option value="">Sin plan</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success mb-3" id="btnAgregarEmpresa">
+            <i class="fas fa-plus"></i> Agregar Empresa
+        </button>
+
+        <div class="table-responsive">
+            <table class="table table-bordered" id="tablaEmpresasCliente">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Plan Especial</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyEmpresasCliente">
+                    <!-- Filas se cargarán dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const id = @ViewBag.Id;
+            let usuarioActual = null; // Para almacenar los datos del usuario cargado
+
+            // Cargar datos del usuario
+            $.get(`/api/Usuarios/${id}`, function (usuario) {
+                usuarioActual = usuario; // Almacenar para uso posterior
+                $('#Id').val(usuario.id);
+                $('#Nombre').val(usuario.nombre);
+                $('#Correo').val(usuario.correo);
+                $('#RolSelect').val(usuario.rol);
+
+                // Cargar empresas para el select principal (si aplica)
+                if (@Json.Serialize(User.IsInRole("SuperUsuario"))) {
+                    $('#EmpresaIdSelect').val(usuario.empresaId);
+                }
+
+                // Mostrar/ocultar sección de Cliente
+                if (usuario.rol === 3) { // Cliente
+                    $('#seccionCliente').show();
+                    cargarEmpresasCliente(usuario.id);
+                    cargarEmpresasDisponibles(usuario.id); // Para el select de agregar
+                } else {
+                    $('#seccionCliente').hide();
+                }
+            });
+
+            // Cargar empresas para el select principal (SuperUsuario)
+            if (@Json.Serialize(User.IsInRole("SuperUsuario"))) {
+                $.get('/api/Empresas', function(empresas) {
+                    var select = $('#EmpresaIdSelect');
+                    select.empty();
+                    select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                    $.each(empresas, function(index, empresa) {
+                        select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                    });
+                    // Seleccionar la empresa actual si ya existía
+                    if (usuarioActual) {
+                        select.val(usuarioActual.empresaId);
+                    }
+                });
+            }
+
+            // Cargar empresas disponibles para agregar (excluyendo las ya asociadas)
+            function cargarEmpresasDisponibles(usuarioId) {
+                // Primero, obtener las empresas ya asociadas
+                $.get(`/api/Usuarios/${usuarioId}/Empresas`, function(relaciones) {
+                    const empresasAsociadas = relaciones.map(r => r.empresaId);
+                    
+                    // Luego, cargar todas las empresas y filtrar
+                    $.get('/api/Empresas', function(empresas) {
+                        const select = $('#nuevaEmpresaSelect');
+                        select.empty();
+                        select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                        $.each(empresas, function(index, empresa) {
+                            // Solo agregar si no está ya asociada
+                            if (!empresasAsociadas.includes(empresa.id)) {
+                                select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Cargar planes especiales para el select de agregar
+            function cargarPlanesDisponibles(planIdActual = null) {
+                $.get('/api/PlanesEspeciales', function(planes) {
+                    const select = $('#nuevoPlanSelect');
+                    select.empty();
+                    select.append($('<option></option>').val('').text('Sin plan'));
+                    $.each(planes, function(index, plan) {
+                        const option = $('<option></option>').val(plan.id).text(`${plan.nombre} - $${plan.costo}`);
+                        if (plan.id == planIdActual) {
+                            option.attr('selected', 'selected');
+                        }
+                        select.append(option);
+                    });
+                });
+            }
+
+            // Cargar y mostrar las empresas del cliente
+            function cargarEmpresasCliente(usuarioId) {
+                $.get(`/api/Usuarios/${usuarioId}/Empresas`, function(relaciones) {
+                    const tbody = $('#tbodyEmpresasCliente');
+                    tbody.empty();
+
+                    if (relaciones.length === 0) {
+                        tbody.append('<tr><td colspan="3">No hay empresas asociadas.</td></tr>');
+                        return;
+                    }
+
+                    $.each(relaciones, function(index, relacion) {
+                        const fila = `
+                            <tr data-relacion-id="${relacion.id}">
+                                <td>${relacion.empresa.nombre}</td>
+                                <td>${relacion.planEspecial ? relacion.planEspecial.nombre : 'Sin plan'}</td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm btnEditarPlan" data-empresa-id="${relacion.empresaId}" data-plan-id="${relacion.planEspecialId || ''}">
+                                        <i class="fas fa-edit"></i> Plan
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm btnEliminarEmpresa" data-empresa-id="${relacion.empresaId}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.append(fila);
+                    });
+
+                    // Asociar eventos a los botones recién creados
+                    $('.btnEditarPlan').on('click', function() {
+                        const empresaId = $(this).data('empresa-id');
+                        const planIdActual = $(this).data('plan-id');
+                        cargarPlanesDisponibles(planIdActual);
+                        $('#nuevaEmpresaSelect').val(empresaId).prop('disabled', true); // Seleccionar y deshabilitar la empresa
+                        $('#btnAgregarEmpresa').text('Actualizar Plan').data('accion', 'actualizar_plan').data('empresa-id', empresaId);
+                    });
+
+                    $('.btnEliminarEmpresa').on('click', function() {
+                        const relacionId = $(this).closest('tr').data('relacion-id');
+                        const empresaId = $(this).data('empresa-id');
+                        eliminarEmpresaCliente(usuarioId, empresaId, relacionId);
+                    });
+                });
+            }
+
+            // Agregar empresa o actualizar plan
+            $('#btnAgregarEmpresa').on('click', function() {
+                const usuarioId = id;
+                const empresaId = parseInt($('#nuevaEmpresaSelect').val());
+                const planId = $('#nuevoPlanSelect').val() === '' ? null : parseInt($('#nuevoPlanSelect').val());
+                const accion = $(this).data('accion') || 'agregar_empresa'; // Por defecto agregar
+                const empresaIdParaActualizar = $(this).data('empresa-id'); // Si es actualizar plan
+
+                if (!empresaId) {
+                    Swal.fire('Error', 'Por favor, seleccione una empresa.', 'error');
+                    return;
+                }
+
+                let url, method;
+                if (accion === 'agregar_empresa') {
+                    url = `/api/Usuarios/${usuarioId}/Empresa/${empresaId}`;
+                    method = 'POST';
+                } else if (accion === 'actualizar_plan') {
+                    // Para actualizar plan, necesitamos el endpoint específico
+                    url = `/api/Usuarios/${usuarioId}/Empresa/${empresaIdParaActualizar}/PlanEspecial/${planId || 0}`;
+                    method = 'POST';
+                }
+
+                const payload = accion === 'agregar_empresa' ? { planEspecialId: planId } : {}; // El plan se envía en la URL para actualizar
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    contentType: 'application/json',
+                    data: JSON.stringify(payload),
+                    success: function (result) {
+                        let mensaje = accion === 'agregar_empresa' ? 
+                            'Empresa agregada y plan asignado correctamente.' : 
+                            'Plan actualizado correctamente.';
+                        
+                        Swal.fire('¡Éxito!', mensaje, 'success').then(() => {
+                            cargarEmpresasCliente(usuarioId);
+                            cargarEmpresasDisponibles(usuarioId); // Actualizar lista de disponibles
+                            $('#nuevaEmpresaSelect').prop('disabled', false); // Habilitar select de empresa
+                            $('#btnAgregarEmpresa').text('Agregar Empresa').removeData('accion').removeData('empresa-id'); // Resetear botón
+                        });
+                    },
+                    error: function (xhr) {
+                        console.error('Error:', xhr);
+                        Swal.fire('Error', xhr.responseJSON?.mensaje || `Error al ${accion === 'agregar_empresa' ? 'agregar' : 'actualizar'} la empresa/plan.`, 'error');
+                    }
+                });
+            });
+
+
+            // Eliminar empresa del cliente
+            function eliminarEmpresaCliente(usuarioId, empresaId, relacionId) {
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción eliminará la asociación del cliente con esta empresa y su plan especial asociado.",
+                    
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/api/Usuarios/${usuarioId}/Empresa/${empresaId}`,
+                            type: 'DELETE',
+                            success: function () {
+                                Swal.fire('¡Eliminado!', 'La empresa ha sido eliminada del cliente.', 'success');
+                                cargarEmpresasCliente(usuarioId);
+                                cargarEmpresasDisponibles(usuarioId); // Actualizar lista de disponibles
+                            },
+                            error: function (xhr) {
+                                console.error('Error:', xhr);
+                                Swal.fire('Error', xhr.responseJSON?.mensaje || 'Error al eliminar la empresa del cliente.', 'error');
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Manejar el cambio de rol para mostrar/ocultar la sección de Cliente
+            $('#RolSelect').change(function() {
+                const rolSeleccionado = parseInt($(this).val());
+                if (rolSeleccionado === 3) { // Cliente
+                    $('#seccionCliente').show();
+                    cargarEmpresasCliente(id); // Cargar empresas si ya era cliente
+                    cargarEmpresasDisponibles(id); // Cargar empresas disponibles
+                } else {
+                    $('#seccionCliente').hide();
+                }
+            });
+
+            // Formulario de edición básica
+            $('#editarUsuarioForm').on('submit', function (e) {
+                e.preventDefault();
+                const usuario = {
+                    id: $('#Id').val(),
+                    nombre: $('#Nombre').val(),
+                    correo: $('#Correo').val(),
+                    rol: parseInt($('#RolSelect').val()),
+                    // Solo enviar EmpresaId si no es Cliente (o según tu lógica de negocio)
+                    // Si es Cliente, el EmpresaId principal podría no ser relevante o podría representar su empresa predeterminada
+                    empresaId: parseInt($('#EmpresaIdSelect').val())
+                };
+                $.ajax({
+                    url: `/api/Usuarios/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(usuario),
+                    success: function () {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Usuario actualizado correctamente',
+                            icon: 'success'
+                        }).then(() => {
+                            //window.location.href = '/Usuario/Index'; // Opcional: recargar la página si es necesario
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: xhr.responseJSON?.mensaje || 'Error al actualizar el usuario',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

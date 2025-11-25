@@ -1,0 +1,117 @@
+<div class="modal fade" id="modalPisos" tabindex="-1" aria-labelledby="modalPisosLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPisosLabel">Gestión de pisos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-3">
+                    <label class="control-label">Pisos</label>
+                    <ul id="pisos" class="list-group">
+                    </ul>
+                    <button type="button" onclick="eventButtonAgregarPiso(event)" id="agregarPiso" class="btn btn-secondary btn-sm mt-2">
+                        <i class="fas fa-plus"></i> Agregar Piso
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalZonas" tabindex="-1" aria-labelledby="modalZonasLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalZonasLabel">Agregar Zonas</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" data-bs-target="#modalPisos" aria-label="Close"></button>
+            </div>
+            <form id="formAgregarZona">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="codigo" class="control-label">Código (común para todas)</label>
+                        <input type="text" id="codigo" class="form-control" required />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="cantidadZonas" class="control-label">Cantidad de Zonas</label>
+                        <input type="number" id="cantidadZonas" class="form-control" min="1" max="26" value="1" required />
+                        <div class="form-text">Número de zonas a crear (máximo 26). Los nombres se generarán secuencialmente como A, B, C...</div>
+                    </div>
+
+                    <div class="form-group mb-3">
+    <label for="letraInicial" class="control-label">Letra inicial</label>
+    <input type="text" id="letraInicial" class="form-control" maxlength="1" value="A" />
+    <div class="form-text">La letra con la que se empezarán a nombrar las zonas (A-Z).</div>
+</div>
+
+                    <div class="form-group mb-3">
+                        <label for="tipoVehiculo" class="control-label">Tipo de vehiculo</label>
+                        <select id="tipoVehiculo" class="form-control" required>
+                            <option value="">Seleccione</option>
+                            <option value="0">Moto</option>
+                            <option value="1">Auto</option>
+                            <option value="2">Camioneta</option>
+                            <option value="3">Camión</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalPisos">Cancelar</button>
+                    <button type="submit" id="agregarZona" class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarZona" tabindex="-1" aria-labelledby="modalEditarZonaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarZonaLabel">Editar Zona</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formEditarZona">
+                <input type="hidden" id="editarZonaId" name="id" />
+                <input type="hidden" id="editarPisoId" name="pisoId" />
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="editarCodigo" class="form-label">Código</label>
+                        <input type="text" class="form-control" id="editarCodigo" name="codigo" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editarNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editarNombre" name="nombre" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editarTipoVehiculo" class="form-label">Tipo de vehículo</label>
+                        <select class="form-select" id="editarTipoVehiculo" name="tipoVehiculo" required>
+                            <option value="0">Moto</option>
+                            <option value="1">Auto</option>
+                            <option value="2">Camioneta</option>
+                            <option value="3">Camión</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="editarEstado" class="form-label">Estado</label>
+                        <select class="form-select" id="editarEstado" name="estado" required>
+                            <option value="0">Libre</option>
+                            <option value="1">Ocupada</option>
+                            <option value="2">Reservada</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger me-auto" id="btnEliminarZona">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

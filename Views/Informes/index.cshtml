@@ -1,0 +1,104 @@
+@model IEnumerable<global::Parqueadero.Models.Informe>
+@{
+    ViewData["Title"] = "Informes Generados";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+        <div>
+            <a asp-action="Generar" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i> Generar Nuevo Informe
+            </a>
+            <a asp-controller="Dashboard" asp-action="SuperAdmin" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+                <i class="fas fa-arrow-left fa-sm text-white-50"></i> Volver al Dashboard
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Historial de Informes</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Fecha Generación</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Período</th>
+                            <th>Formato</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FechaGeneracion.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@item.Titulo</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@item.Tipo.ToUpper()</span>
+                                </td>
+                                <td>@item.FechaInicio.ToString("dd/MM/yyyy") - @item.FechaFin.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    @if(item.Formato.ToLower() == "pdf")
+                                    {
+                                        <i class="fas fa-file-pdf text-danger"></i> <span>PDF</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-file-code text-primary"></i> <span>HTML</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <!-- Aquí podríamos tener un botón para descargar si guardáramos el archivo o lo regeneráramos -->
+                                        <!-- Por ahora solo permitimos eliminar -->
+                                        <form asp-action="Eliminar" asp-route-id="@item.Id" method="post" onsubmit="return confirm('¿Está seguro de eliminar este informe?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                },
+                "order": [[ 0, "desc" ]]
+            });
+        });
+    </script>
+}

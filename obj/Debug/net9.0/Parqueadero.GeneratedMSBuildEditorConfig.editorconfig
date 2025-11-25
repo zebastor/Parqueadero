@@ -1,0 +1,237 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Parqueadero
+build_property.RootNamespace = Parqueadero
+build_property.ProjectDir = C:\Users\SEBASTIAN\Documents\Unillanos\avanzadas\proyect\fin\Parqueadero-main\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\SEBASTIAN\Documents\Unillanos\avanzadas\proyect\fin\Parqueadero-main
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Autenticacion/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0ZW50aWNhY2lvblxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Dashboard/Admin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXEFkbWluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Dashboard/Cliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXENsaWVudGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Dashboard/SuperAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFN1cGVyQWRtaW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Dashboard/Trabajador.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFRyYWJhamFkb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Dashboard/VerMapa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFZlck1hcGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Descuentos/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Descuentos/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Descuentos/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvc1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Descuentos/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVzY3VlbnRvc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Empresas/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wcmVzYXNcQ3JlYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Empresas/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wcmVzYXNcRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Empresas/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wcmVzYXNcRWxpbWluYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Empresas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wcmVzYXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Factura/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmFjdHVyYVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Informes/Generar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5mb3JtZXNcR2VuZXJhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Informes/index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5mb3JtZXNcaW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Parqueaderos/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlYWRlcm9zXENyZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Parqueaderos/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlYWRlcm9zXEVkaXRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Parqueaderos/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlYWRlcm9zXEVsaW1pbmFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Parqueaderos/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlYWRlcm9zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Parqueaderos/Zonas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFycXVlYWRlcm9zXFpvbmFzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/PlanesEspeciales/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVzRXNwZWNpYWxlc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/PlanesEspeciales/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVzRXNwZWNpYWxlc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/PlanesEspeciales/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVzRXNwZWNpYWxlc1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/PlanesEspeciales/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGxhbmVzRXNwZWNpYWxlc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Reserva/ClienteCrear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVxDbGllbnRlQ3JlYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Reserva/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVxDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Reserva/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Reserva/MisReservas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVzZXJ2YVxNaXNSZXNlcnZhcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Shared/_LayoutAuth.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBdXRoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Tarifas/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyaWZhc1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Tarifas/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyaWZhc1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Tarifas/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyaWZhc1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Tarifas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyaWZhc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/CrearCliente.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDcmVhckNsaWVudGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFZGl0YXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFbGltaW5hci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Usuario/RegistrarmeEmpresa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3RyYXJtZUVtcHJlc2EuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Vehiculo/Crear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWN1bG9cQ3JlYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Vehiculo/Editar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWN1bG9cRWRpdGFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Vehiculo/Eliminar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWN1bG9cRWxpbWluYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Vehiculo/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmVoaWN1bG9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/SEBASTIAN/Documents/Unillanos/avanzadas/proyect/fin/Parqueadero-main/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-03zrwk62cv

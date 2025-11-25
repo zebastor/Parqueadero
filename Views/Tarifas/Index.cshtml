@@ -1,0 +1,84 @@
+@{
+    ViewData["Title"] = "Tarifas";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Tarifas</h1>
+        <div>
+            <a asp-action="Crear" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Tarifa
+            </a>
+              <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="tarifasTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Vehículo</th>
+                            <th>Valor por Hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const tipoVehiculo = {
+                0: 'Moto',
+                1: 'Auto',
+                2: 'Camioneta',
+                3: 'Camión'
+            };
+
+            $('#tarifasTable').DataTable({
+                ajax: {
+                    url: '/api/Tarifas',
+                    dataSrc: ''
+                },
+                columns: [
+                    { 
+                        data: 'tipoVehiculo',
+                        render: function(data) {
+                            return tipoVehiculo[data] || 'Desconocido';
+                        }
+                    },
+                    { 
+                        data: 'valorPorHora',
+                        render: function(data) {
+                            return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(data);
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function(data) {
+                            return `
+                                <div class="btn-group" role="group">
+                                    <a href="/Tarifas/Editar/${data}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="/Tarifas/Eliminar/${data}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>`;
+                        }
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                }
+            });
+        });
+    </script>
+}

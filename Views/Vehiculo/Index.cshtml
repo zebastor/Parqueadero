@@ -1,0 +1,107 @@
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Vehículos";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">
+            <i class="fas fa-car-side me-2 text-primary"></i> Vehículos
+        </h1>
+        <div>
+            <a asp-action="Crear" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-1"></i> Nuevo Vehículo
+            </a>
+            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-chevron-left me-1"></i> Volver
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="vehiculosTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Tipo de Vehículo</th>
+                            @if (!User.IsInRole("Cliente"))
+                            {
+                                <th>Usuario</th>
+                            }
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Variable para saber si es cliente
+            const esCliente = @User.IsInRole("Cliente").ToString().ToLower();
+
+            const tipoVehiculo = {
+                0: 'Moto',
+                1: 'Auto',
+                2: 'Camioneta',
+                3: 'Camión'
+            };
+
+            // 1. Definimos las columnas base
+            let columnsConfig = [
+                { data: 'placa' },
+                {
+                    data: 'tipoVehiculo',
+                    render: function(data) {
+                        return tipoVehiculo[data] || 'Desconocido';
+                    }
+                }
+            ];
+
+            // 2. Si NO es cliente, añadimos la columna de Usuario
+            if (!esCliente) {
+                columnsConfig.push({
+                    data: 'usuario',
+                    render: function(data) {
+                        return data ? data.nombre : 'No asignado';
+                    }
+                });
+            }
+
+            // 3. Añadimos la columna de Acciones al final
+            columnsConfig.push({
+                data: 'id',
+                className: 'text-center',
+                render: function(data) {
+                    // CÓDIGO ACTUALIZADO CON NUEVOS ÍCONOS Y CLASES DE BOTONES
+                    return `
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="/Vehiculo/Editar/${data}" class="btn btn-warning" title="Editar Vehículo">
+                                <i class="fas fa-pen-to-square"></i>
+                            </a>
+                            <a href="/Vehiculo/Eliminar/${data}" class="btn btn-danger" title="Eliminar Vehículo">
+                                <i class="far fa-trash-can"></i>
+                            </a>
+                        </div>`;
+                }
+            });
+
+            // 4. Inicializamos el DataTable
+            $('#vehiculosTable').DataTable({
+                ajax: {
+                    url: '/api/Vehiculos', // La API ya filtra por rol
+                    dataSrc: ''
+                },
+                columns: columnsConfig, // Usamos la configuración dinámica
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                }
+            });
+        });
+    </script>
+}

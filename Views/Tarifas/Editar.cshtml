@@ -1,0 +1,153 @@
+@{
+    ViewData["Title"] = "Editar Tarifa";
+    var id = ViewBag.Id;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Editar Tarifa</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form id="formEditarTarifa">
+                <input type="hidden" id="id" value="@id" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tipoVehiculo">Tipo de Vehículo</label>
+                            <select class="form-control" id="tipoVehiculo" required>
+                                <option value="">Cargando...</option>
+                            </select>
+                            <div class="invalid-feedback">El tipo de vehículo es requerido</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="parqueaderoId">Parqueadero</label>
+                            <select class="form-control" id="parqueaderoId" required>
+                                <option value="">Seleccione un parqueadero</option>
+                            </select>
+                            <div class="invalid-feedback">El parqueadero es requerido</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="valorPorHora">Valor por Hora</label>
+                            <input type="number" class="form-control" id="valorPorHora" min="0" step="100" required>
+                            <div class="invalid-feedback">El valor por hora es requerido y debe ser mayor o igual a 0</div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            const id = $('#id').val();
+            const tipoVehiculo = {
+                0: 'Moto',
+                1: 'Auto',
+                2: 'Camioneta',
+                3: 'Camión'
+            };
+
+            $.get('/api/Parqueaderos')
+                .done(function(parqueaderos) {
+                    const select = $('#parqueaderoId');
+                    select.empty();
+                    select.append('<option value="">Seleccione un parqueadero</option>');
+                    parqueaderos.forEach(function(parqueadero) {
+                        select.append('<option value="' + parqueadero.id + '">' + parqueadero.nombre + '</option>');
+                    });
+                })
+                .fail(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo cargar la lista de parqueaderos'
+                    });
+                });
+
+            $.get(`/api/Tarifas/${id}`)
+                .done(function(tarifa) {
+                    $('#tipoVehiculo').empty();
+                    $.each(tipoVehiculo, function(value, text) {
+                        $('#tipoVehiculo').append($('<option>', {
+                            value: value,
+                            text: text,
+                            selected: value == tarifa.tipoVehiculo
+                        }));
+                    });
+                    $('#valorPorHora').val(tarifa.valorPorHora);
+                    $('#parqueaderoId').val(tarifa.parqueaderoId);
+                })
+                .fail(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo cargar la tarifa'
+                    }).then(() => {
+                        window.location.href = '/Tarifas/Index';
+                    });
+                });
+
+            $('#formEditarTarifa').on('submit', function(e) {
+                e.preventDefault();
+                
+                if (this.checkValidity() === false) {
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                    return;
+                }
+
+                const tarifaData = {
+                    id: parseInt(id),
+                    tipoVehiculo: parseInt($('#tipoVehiculo').val()),
+                    valorPorHora: parseFloat($('#valorPorHora').val()),
+                    parqueaderoId: parseInt($('#parqueaderoId').val())
+                };
+
+                $.ajax({
+                    url: `/api/Tarifas/${id}`,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(tarifaData),
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'La tarifa ha sido actualizada correctamente',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = '/Tarifas/Index';
+                        });
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Ocurrió un error al actualizar la tarifa';
+                        if (xhr.responseJSON && xhr.responseJSON.mensaje) {
+                            errorMessage = xhr.responseJSON.mensaje;
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: errorMessage
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

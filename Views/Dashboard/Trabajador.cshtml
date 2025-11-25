@@ -1,0 +1,154 @@
+@{
+    ViewData["Title"] = "Panel de Control | Trabajador";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="display-5 fw-bold mb-5 text-dark border-bottom pb-3">
+        <i class="fas fa-tachometer-alt text-primary me-3"></i> Panel del Trabajador
+    </h1>
+
+    <div class="row g-4 mb-5">
+        
+        <div class="col-xl-6 col-lg-6 col-md-12">
+            <div class="card shadow-lg border-0 h-100 bg-primary-gradient text-white">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="mb-0 text-uppercase fw-semibold opacity-75">Plazas Ocupadas / Disponibles</p>
+                            <h3 class="display-6 fw-bold">
+                                @ViewBag.VehiculosCount / @ViewBag.PlazasTotal
+                            </h3>
+                            <small class="opacity-75">Toda la capacidad del parqueadero.</small>
+                        </div>
+                        <i class="fas fa-parking fa-4x opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-primary border-0">
+                    <a asp-controller="Vehiculo" asp-action="Index" class="text-white text-decoration-none fw-bold small">
+                        Ver Mapa de Plazas <i class="fas fa-arrow-circle-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-3 col-md-6">
+            <div class="card shadow-lg border-0 h-100 card-rounded">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto me-3">
+                            <div class="icon-circle bg-success text-white">
+                                <i class="fas fa-dollar-sign fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                Cobros del Día (Hoy)
+                            </div>
+                            <div class="h5 mb-0 fw-bolder text-gray-800">@ViewBag.CobrosDelDia</div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 pt-0">
+                    <a asp-controller="Factura" asp-action="Index" class="btn btn-sm btn-outline-success w-100">
+                        <i class="fas fa-receipt me-1"></i> Ver Transacciones
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-3 col-md-6">
+            <div class="card shadow-lg border-0 h-100 card-rounded">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto me-3">
+                            <div class="icon-circle bg-warning text-white">
+                                <i class="fas fa-calendar-alt fa-2x"></i>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                Reservas Pendientes
+                            </div>
+                            <div class="h5 mb-0 fw-bolder text-gray-800">@ViewBag.ReservasCount</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 pt-0">
+                    <a asp-controller="Reserva" asp-action="Index" class="btn btn-sm btn-outline-warning w-100">
+                        <i class="fas fa-list-alt me-1"></i> Gestionar Reservas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 class="h4 mb-4 text-dark">
+        <i class="fas fa-link me-2 text-secondary"></i> Accesos Rápidos
+    </h2>
+
+    <div class="row g-4">
+        
+        <div class="col-xl-4 col-md-6">
+             <div class="card shadow-md h-100 py-2 border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-users fa-3x text-info me-4"></i>
+                        <div>
+                             <p class="text-info fw-bold mb-1">Total de Usuarios Registrados</p>
+                             <h4 class="fw-bold mb-0 text-gray-800">@ViewBag.TrabajadoresCount</h4>
+                             <small class="text-muted">Trabajadores y Clientes.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                     <a asp-controller="Usuario" asp-action="Index" class="btn btn-sm btn-info w-100 text-white">
+                        <i class="fas fa-user-friends me-1"></i> Ver Listado
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-4 col-md-6">
+            <div class="card shadow-md h-100 py-2 border-0">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-car-side fa-3x text-danger me-4"></i>
+                        <div>
+                             <p class="text-danger fw-bold mb-1">Vehículos Adentro</p>
+                             <h4 class="fw-bold mb-0 text-gray-800">@ViewBag.VehiculosCount</h4>
+                             <small class="text-muted">Vehículos actualmente parqueados.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-sm btn-danger w-100">
+                        <i class="fas fa-list me-1"></i> Gestionar Ingreso/Salida
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    /* Estilos Modernos y Gradientes (Requiere Bootstrap 5) */
+    .bg-primary-gradient {
+        /* Un degradado simple y elegante */
+        background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    }
+
+    .icon-circle {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .card-rounded {
+        border-radius: 0.75rem !important; /* Bordes ligeramente más redondeados */
+    }
+</style>

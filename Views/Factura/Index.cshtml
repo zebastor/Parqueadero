@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Facturas";
+}
+
+<div class="container-fluid">
+ <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Facturas</h1>
+        <div>
+              <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="facturasTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Fecha Emisión</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#facturasTable').DataTable({
+                ajax: {
+                    url: '/api/Facturas',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'codigo' },
+                    { data: 'fechaEmision', render: function(data) { return new Date(data).toLocaleString(); } },
+                    { data: 'cobro.total', render: function(data) { return '$' + data.toFixed(2); } },
+                    { data: 'enviado', render: function(data) { return data ? 'Enviado' : 'No Enviado'; } },
+                    {
+                        data: 'id',
+                        render: function(data) {
+                            return `
+                                <a class="btn btn-primary btn-sm" target="_blank" href="/api/Facturas/${data}/comprobante">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </a>
+                            `;
+                        }
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+                }
+            });
+        });
+    </script>
+}

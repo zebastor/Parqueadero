@@ -1,0 +1,229 @@
+﻿@{
+    ViewData["Title"] = "Nueva Reserva";
+}
+
+<div class="container-fluid py-4">
+    
+    <div class="d-flex justify-content-start mb-3">
+        <a asp-controller="Dashboard" asp-action="Cliente" class="btn btn-outline-secondary btn-sm shadow-sm">
+            <i class="fas fa-arrow-left me-2"></i> Volver al Panel
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-calendar-check fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-0 fw-bold">Agendar Reserva</h5>
+                            <small class="text-white-50">Complete los datos para asegurar su puesto.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <form id="formCrearReserva">
+                        <div class="row g-3">
+                            
+                            <div class="col-12">
+                                <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i> Ubicación
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="parqueaderoId" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                    <label for="parqueaderoId">Parqueadero</label>
+                                    <div class="invalid-feedback">Requerido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="pisoId" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                    <label for="pisoId">Piso</label>
+                                    <div class="invalid-feedback">Requerido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+                                    <i class="fas fa-info-circle me-2"></i> Detalles
+                                </h6>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="datetime-local" class="form-control" id="horaEntrada" required>
+                                    <label for="horaEntrada">Fecha y Hora</label>
+                                    <div class="invalid-feedback">Requerido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="vehiculoId" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                    <label for="vehiculoId">Vehículo</label>
+                                    <div class="invalid-feedback">Requerido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="zonaId" required>
+                                        <option value="">Seleccione...</option>
+                                    </select>
+                                    <label for="zonaId">Zona / Cupo</label>
+                                    <div class="invalid-feedback">Requerido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm py-3 fw-bold">
+                                    <i class="fas fa-save me-2"></i> Confirmar Reserva
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const parqueaderoSelect = $('#parqueaderoId');
+            const pisoSelect = $('#pisoId');
+            const zonaSelect = $('#zonaId');
+            const vehiculoSelect = $('#vehiculoId');
+            // Obtenemos ID del usuario actual
+            const userId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
+
+            // 1. Cargar Vehículos del Cliente
+            $.get('/api/Vehiculos')
+                .done(function(vehiculos) {
+                    vehiculoSelect.empty().append('<option value="">Seleccione un vehículo</option>');
+                    vehiculos.forEach(v => {
+                        vehiculoSelect.append(`<option value="${v.id}" data-placa="${v.placa}">${v.placa} - ${v.tipoVehiculo}</option>`);
+                    });
+                });
+
+            // 2. Cargar Parqueaderos (El backend filtra automáticamente)
+            $.get('/api/Parqueaderos')
+                .done(function(parqueaderos) {
+                    parqueaderoSelect.empty().append('<option value="">Seleccione un parqueadero</option>');
+                    if (parqueaderos.length === 0) {
+                        parqueaderoSelect.append('<option value="" disabled>No hay parqueaderos disponibles (¿Te uniste a una empresa?)</option>');
+                    }
+                    parqueaderos.forEach(p => {
+                        parqueaderoSelect.append(`<option value="${p.id}">${p.nombre} (${p.direccion ?? "Sin dirección"})</option>`);
+                    });
+                })
+                .fail(function() {
+                    console.error("Error cargando parqueaderos");
+                });
+
+            // 3. Cambio de Parqueadero -> Cargar Pisos
+            parqueaderoSelect.on('change', function() {
+                const pId = $(this).val();
+                pisoSelect.empty().append('<option value="">Cargando...</option>');
+                zonaSelect.empty().append('<option value="">Seleccione primero un piso</option>');
+
+                if (!pId) {
+                    pisoSelect.empty().append('<option value="">Seleccione un piso</option>');
+                    return;
+                }
+
+                $.get(`/api/Pisos/${pId}`).done(function(pisos) {
+                    pisoSelect.empty().append('<option value="">Seleccione un piso</option>');
+                    if (pisos.length === 0) {
+                        pisoSelect.append('<option value="" disabled>No hay pisos configurados</option>');
+                    }
+                    pisos.forEach(p => {
+                        pisoSelect.append(`<option value="${p.id}">Piso ${p.numero}</option>`);
+                    });
+                });
+            });
+
+            // 4. Cargar Zonas Disponibles (Requiere Piso y Vehículo)
+            function cargarZonas() {
+                const pId = pisoSelect.val();
+                const vId = vehiculoSelect.val();
+                const placa = vehiculoSelect.find(':selected').data('placa');
+
+                if (!pId || !placa) return;
+
+                zonaSelect.empty().append('<option value="">Cargando zonas...</option>');
+
+                $.get(`/api/Zonas/TipoVehiculo/${placa}/Piso/${pId}`)
+                    .done(function(zonas) {
+                        zonaSelect.empty().append('<option value="">Seleccione una zona</option>');
+                        if (zonas.length === 0) {
+                            zonaSelect.append('<option value="" disabled>No hay zonas disponibles para este vehículo</option>');
+                        }
+                        zonas.forEach(z => {
+                            zonaSelect.append(`<option value="${z.id}">${z.nombre} (${z.codigo})</option>`);
+                        });
+                    });
+            }
+
+            pisoSelect.on('change', cargarZonas);
+            vehiculoSelect.on('change', cargarZonas);
+
+            // 5. Enviar Formulario (Sin Alertas)
+            $('#formCrearReserva').on('submit', function(e) {
+                e.preventDefault();
+                
+                // Validación HTML5 visual
+                if (!this.checkValidity()) {
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                    return;
+                }
+
+                const data = {
+                    parqueaderoId: parseInt(parqueaderoSelect.val()),
+                    zonaId: parseInt(zonaSelect.val()),
+                    vehiculoId: parseInt(vehiculoSelect.val()),
+                    usuarioId: parseInt(userId),
+                    horaEntrada: $('#horaEntrada').val()
+                };
+
+                // Deshabilitar botón para evitar doble click
+                const btn = $(this).find('button[type="submit"]');
+                const originalText = btn.html();
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Procesando...');
+
+                $.ajax({
+                    url: '/api/Reservas',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function() {
+                        // Redirección inmediata y silenciosa
+                        window.location.href = '/Reserva/MisReservas'; 
+                    },
+                    error: function(xhr) {
+                        // Solo log en consola, restauramos botón
+                        console.error('Error reserva:', xhr.responseJSON?.mensaje);
+                        btn.prop('disabled', false).html(originalText);
+                        // Opcional: Mostrar error discreto en el formulario si lo deseas
+                    }
+                });
+            });
+        });
+    </script>
+}

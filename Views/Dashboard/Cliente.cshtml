@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Panel de Control";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-5 border-bottom pb-3">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800 fw-bold">Panel de Cliente</h1>
+            <p class="text-muted mb-0">Gestione sus reservas y vehículos desde aquí.</p>
+        </div>
+        <span class="d-none d-sm-inline-block text-dark fw-bold">
+            Hola, @User.Identity.Name
+        </span>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100" style="border-top: 4px solid #4e73df !important;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-primary mb-3">Nueva Reserva</h5>
+                    <p class="card-text text-muted small">
+                        Agende un puesto de estacionamiento seleccionando fecha, zona y vehículo.
+                    </p>
+                    <div class="mt-4">
+                        <a asp-controller="Reserva" asp-action="ClienteCrear" class="btn btn-primary w-100">
+                            Reservar Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-3">Historial y Pagos</h5>
+                    <p class="card-text text-muted small">
+                        Consulte el estado de sus reservas activas y el historial de pagos realizados.
+                    </p>
+                    <div class="mt-4">
+                        <a asp-controller="Reserva" asp-action="MisReservas" class="btn btn-outline-dark w-100">
+                            Ver Mis Reservas
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-3">Mis Vehículos</h5>
+                    <p class="card-text text-muted small">
+                        Administre la información de sus vehículos registrados para agilizar reservas.
+                    </p>
+                    <div class="mt-4">
+                        <a asp-controller="Vehiculo" asp-action="Index" class="btn btn-outline-secondary w-100">
+                            Gestionar Vehículos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-3">Mapa de Sedes</h5>
+                    <p class="card-text text-muted small">
+                        Explore las ubicaciones de nuestros parqueaderos disponibles en el mapa.
+                    </p>
+                    <div class="mt-4">
+                        <a asp-controller="Dashboard" asp-action="VerMapa" class="btn btn-outline-info w-100">
+                            Ver Mapa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark mb-3">Afiliación a Empresas</h5>
+                    <p class="card-text text-muted small">
+                        Únase a una empresa para acceder a tarifas o planes especiales.
+                    </p>
+                    <div class="mt-4">
+                        <a asp-controller="Usuario" asp-action="RegistrarmeEmpresa" class="btn btn-outline-success w-100">
+                            Gestionar Afiliación
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

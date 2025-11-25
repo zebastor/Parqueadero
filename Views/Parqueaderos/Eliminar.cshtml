@@ -1,0 +1,75 @@
+@using Parqueadero.Models
+@model Parqueadero
+
+@{
+    ViewData["Title"] = "Eliminar Parqueadero";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Eliminar Parqueadero</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">¿Está seguro que desea eliminar este parqueadero?</h4>
+                <p>Esta acción no se puede deshacer.</p>
+            </div>
+            <form asp-action="Eliminar" id="eliminarParqueaderoForm">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const id = @ViewBag.Id;
+            $('#eliminarParqueaderoForm').on('submit', function (e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/api/Parqueaderos/' + id,
+                            type: 'DELETE',
+                            success: function (result) {
+                                Swal.fire({
+                                    title: '¡Eliminado!',
+                                    text: 'El parqueadero ha sido eliminado correctamente',
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.href = '/Parqueaderos/Index';
+                                });
+                            },
+                            error: function (xhr) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ha ocurrido un error al eliminar el parqueadero',
+                                    icon: 'error'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+} 

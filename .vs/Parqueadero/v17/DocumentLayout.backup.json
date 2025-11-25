@@ -1,0 +1,335 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\julia\\source\\repos\\Parqueadero\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\autenticacion\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\autenticacion\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\shared\\_layoutauth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\shared\\_layoutauth.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\reserva\\clientecrear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\reserva\\clientecrear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\reserva\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\reserva\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\api\\parqueaderosapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\api\\parqueaderosapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\parqueaderos\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\parqueaderos\\crear.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\services\\parqueaderoservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:services\\parqueaderoservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\models\\parqueadero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:models\\parqueadero.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\api\\empresasapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\api\\empresasapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\api\\usuariosapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\api\\usuariosapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\openalpr_log.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:openalpr_log.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\vehiculo\\editar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\vehiculo\\editar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\usuario\\registrarmeempresa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\usuario\\registrarmeempresa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\views\\reserva\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:views\\reserva\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\api\\reservasapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\api\\reservasapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\models\\reserva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:models\\reserva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\vehiculocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\vehiculocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|c:\\users\\julia\\source\\repos\\parqueadero\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2245EB06-F7FB-7E89-B42E-BB29F4275921}|Parqueadero.csproj|solutionrelative:controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Autenticacion\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Autenticacion\\Login.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Autenticacion\\Login.cshtml",
+              "RelativeToolTip": "Views\\Autenticacion\\Login.cshtml",
+              "ViewState": "AgIAAHYAAAAAAAAAAADwv5AAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T11:16:22.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_LayoutAuth.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Shared\\_LayoutAuth.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_LayoutAuth.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Shared\\_LayoutAuth.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_LayoutAuth.cshtml",
+              "ViewState": "AgIAAAcAAAAAAAAAAADwvygAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T11:15:53.189Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ClienteCrear.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\ClienteCrear.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reserva\\ClienteCrear.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\ClienteCrear.cshtml",
+              "RelativeToolTip": "Views\\Reserva\\ClienteCrear.cshtml",
+              "ViewState": "AgIAAJ4AAAAAAAAAAAAcwLEAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T11:09:25.586Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Crear.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Parqueaderos\\Crear.cshtml",
+              "RelativeDocumentMoniker": "Views\\Parqueaderos\\Crear.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Parqueaderos\\Crear.cshtml",
+              "RelativeToolTip": "Views\\Parqueaderos\\Crear.cshtml",
+              "ViewState": "AgIAAOoAAAAAAAAAAAAQwP4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T10:37:53.94Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ParqueaderoServicio.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Services\\ParqueaderoServicio.cs",
+              "RelativeDocumentMoniker": "Services\\ParqueaderoServicio.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Services\\ParqueaderoServicio.cs",
+              "RelativeToolTip": "Services\\ParqueaderoServicio.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwBEAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T10:37:12.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Parqueadero.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Models\\Parqueadero.cs",
+              "RelativeDocumentMoniker": "Models\\Parqueadero.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Models\\Parqueadero.cs",
+              "RelativeToolTip": "Models\\Parqueadero.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T10:36:38.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Editar.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Vehiculo\\Editar.cshtml",
+              "RelativeDocumentMoniker": "Views\\Vehiculo\\Editar.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Vehiculo\\Editar.cshtml",
+              "RelativeToolTip": "Views\\Vehiculo\\Editar.cshtml",
+              "ViewState": "AgIAAJ8AAAAAAAAAAADwv7kAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T09:59:54.38Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RegistrarmeEmpresa.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Usuario\\RegistrarmeEmpresa.cshtml",
+              "RelativeDocumentMoniker": "Views\\Usuario\\RegistrarmeEmpresa.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Usuario\\RegistrarmeEmpresa.cshtml",
+              "RelativeToolTip": "Views\\Usuario\\RegistrarmeEmpresa.cshtml",
+              "ViewState": "AgIAAL8AAAAAAAAAAADwv9gAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T09:48:56.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ParqueaderosApiController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\ParqueaderosApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\ParqueaderosApiController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\ParqueaderosApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\ParqueaderosApiController.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAkwHUAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T09:46:10.984Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Crear.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\Crear.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reserva\\Crear.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\Crear.cshtml",
+              "RelativeToolTip": "Views\\Reserva\\Crear.cshtml",
+              "ViewState": "AgIAAHMBAAAAAAAAAADwv5YBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T01:04:11.456Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EmpresasApiController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\EmpresasApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\EmpresasApiController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\EmpresasApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\EmpresasApiController.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAqwFMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T10:27:53.001Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reserva\\Index.cshtml",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Views\\Reserva\\Index.cshtml",
+              "RelativeToolTip": "Views\\Reserva\\Index.cshtml",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAiwHMAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-25T01:15:08.334Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-25T00:59:14.722Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UsuariosApiController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\UsuariosApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\UsuariosApiController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\UsuariosApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\UsuariosApiController.cs",
+              "ViewState": "AgIAALwAAAAAAAAAAAAlwM4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T10:03:08.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "openalpr_log.txt",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\openalpr_log.txt",
+              "RelativeDocumentMoniker": "openalpr_log.txt",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\openalpr_log.txt",
+              "RelativeToolTip": "openalpr_log.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-11-25T10:09:55.603Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ReservasApiController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\ReservasApiController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Api\\ReservasApiController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\Api\\ReservasApiController.cs",
+              "RelativeToolTip": "Controllers\\Api\\ReservasApiController.cs",
+              "ViewState": "AgIAAAcCAAAAAAAAAAAkwBsCAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T00:51:06.249Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Reserva.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Models\\Reserva.cs",
+              "RelativeDocumentMoniker": "Models\\Reserva.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Models\\Reserva.cs",
+              "RelativeToolTip": "Models\\Reserva.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T00:50:47.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "VehiculoController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\VehiculoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\VehiculoController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\VehiculoController.cs",
+              "RelativeToolTip": "Controllers\\VehiculoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T00:42:47.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\julia\\source\\repos\\Parqueadero\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "Controllers\\DashboardController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T00:38:30.985Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

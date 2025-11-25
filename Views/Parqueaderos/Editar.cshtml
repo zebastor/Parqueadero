@@ -1,0 +1,218 @@
+@using Parqueadero.Models
+@model Parqueadero
+
+@{
+    ViewData["Title"] = "Editar Parqueadero";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Editar Parqueadero</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form asp-action="Editar" id="editarParqueaderoForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="form-group mb-3">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Direccion" class="control-label"></label>
+                    <input asp-for="Direccion" class="form-control" id="direccion" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">Ubicación</label>
+                    <div class="input-group mb-2">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Buscar ubicación...">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div id="map" style="height: 400px;" class="mb-2"></div>
+                    <small class="text-muted">Haga clic en el mapa para seleccionar la ubicación exacta</small>
+                </div>
+
+                <input type="hidden" asp-for="Latitud" id="latitud" />
+                <input type="hidden" asp-for="Longitud" id="longitud" />
+
+                @if (User.IsInRole("SuperUsuario")) {
+                    <div class="form-group mb-3">
+                        <label asp-for="EmpresaId" class="control-label">Empresa</label>
+                        <select asp-for="EmpresaId" class="form-control" asp-items="ViewBag.Empresas">
+                            <option value="">Seleccione una empresa</option>
+                        </select>
+                        <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                    </div>
+                } else {
+                    <input type="hidden" asp-for="EmpresaId" value="@User.FindFirst("EmpresaId").Value">
+                }
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.MapsToken&libraries=places"></script>
+    <script>
+        $(document).ready(function () {
+            let map;
+            let marker;
+            let geocoder;
+            let searchBox;
+
+            let latitud;
+            let longitud;
+            let empresaId;
+
+            const id = @ViewBag.Id;
+
+            $.get(`/api/Parqueaderos/${id}`, function (empresa) {
+                $('#Id').val(empresa.id);
+                $('#Nombre').val(empresa.nombre);
+                $('#direccion').val(empresa.direccion);
+                $('#latitud').val(empresa.latitud);
+                $('#longitud').val(empresa.longitud);
+                $('#EmpresaId').val(empresa.empresaId);
+
+                latitud = empresa.latitud;
+                longitud = empresa.longitud;
+                empresaId = empresa.empresaId;
+
+                initMap();
+            });
+
+            // Inicializar el mapa
+            function initMap() {
+                const defaultLocation = { lat: latitud, lng: longitud };
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: defaultLocation,
+                    zoom: 13
+                });
+
+                geocoder = new google.maps.Geocoder();
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: defaultLocation,
+                    draggable: true
+                });
+
+                // Configurar el buscador
+                const searchInput = document.getElementById('searchInput');
+                searchBox = new google.maps.places.SearchBox(searchInput);
+
+                // Evento de búsqueda
+                $('#searchButton').click(function() {
+                    const place = searchBox.getPlaces()[0];
+                    if (place) {
+                        map.setCenter(place.geometry.location);
+                        updateMarker(place.geometry.location);
+                        updateAddress(place.formatted_address);
+                    }
+                });
+
+                // Evento de clic en el mapa
+                map.addListener('click', function(e) {
+                    updateMarker(e.latLng);
+                    geocodeLatLng(e.latLng);
+                });
+
+                // Evento de arrastrar el marcador
+                marker.addListener('dragend', function() {
+                    geocodeLatLng(marker.getPosition());
+                });
+            }
+
+            function updateMarker(latLng) {
+                marker.setPosition(latLng);
+                $('#latitud').val(latLng.lat());
+                $('#longitud').val(latLng.lng());
+            }
+
+            function updateAddress(address) {
+                $('#direccion').val(address);
+            }
+
+            function geocodeLatLng(latLng) {
+                geocoder.geocode({ location: latLng }, function(results, status) {
+                    if (status === 'OK' && results[0]) {
+                        updateAddress(results[0].formatted_address);
+                    }
+                });
+            }
+
+            // Cargar empresas
+            $.get('/api/Empresas', function(empresas) {
+                var select = $('#EmpresaId');
+                select.empty();
+                select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                $.each(empresas, function(index, empresa) {
+                    select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                });
+                // Seleccionar la empresa actual
+                select.val(empresaId);
+            });
+
+            $('#editarParqueaderoForm').on('submit', function (e) {
+                e.preventDefault();
+                
+                if (!$('#latitud').val() || !$('#longitud').val()) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor seleccione una ubicación en el mapa',
+                       
+                    });
+                    return;
+                }
+
+                const formData = {
+                    id: parseInt($('#Id').val()),
+                    nombre: $('#Nombre').val(),
+                    direccion: $('#direccion').val(),
+                    latitud: parseFloat($('#latitud').val()),
+                    longitud: parseFloat($('#longitud').val()),
+                    empresaId: parseInt($('#EmpresaId').val())
+                };
+         
+                $.ajax({
+                    url: '/api/Parqueaderos/' + $('#Id').val(),
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (result) {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Parqueadero actualizado correctamente',
+                           
+                        }).then(() => {
+                            window.location.href = '/Parqueaderos/Index';
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ha ocurrido un error al actualizar el parqueadero',
+                           
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+} 

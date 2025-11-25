@@ -1,0 +1,156 @@
+@using Parqueadero.Models
+@model Usuario
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Crear Usuario</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form id="crearUsuarioForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Nombre">Nombre</label>
+                            <input asp-for="Nombre" class="form-control" required />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Correo">Correo</label>
+                            <input asp-for="Correo" type="email" class="form-control" required />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Rol">Rol</label>
+                            <select asp-for="Rol" class="form-control" required>
+                                <option value="">Seleccione un rol</option>
+                                @if (User.IsInRole("SuperUsuario"))
+                                {
+                                    <option value="0">SuperUsuario</option>
+                                }
+                                <option value="1">Administrador</option>
+                                <option value="2">Trabajador</option>
+                                <option value="3">Cliente</option>
+                            </select>
+                            <span asp-validation-for="Rol" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Clave">Contraseña</label>
+                            <input type="password" asp-for="Clave" class="form-control" required />
+                            <span asp-validation-for="Clave" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ConfirmarClave">Confirmar Contraseña</label>
+                            <input type="password" id="ConfirmarClave" class="form-control" required />
+                            <span id="ConfirmarClaveError" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @if (User.IsInRole("SuperUsuario")) {
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EmpresaId">Empresa</label>
+                                <select asp-for="EmpresaId" class="form-control" required>
+                                </select>
+                                <span asp-validation-for="EmpresaId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    } else {
+                        <input type="hidden" asp-for="EmpresaId" value="@User.FindFirst("EmpresaId").Value"/>
+                    }
+                </div>
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $.get('/api/Empresas', function(empresas) {
+                var select = $('#EmpresaId');
+                select.empty();
+                select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                $.each(empresas, function(index, empresa) {
+                    select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                });
+            });
+
+            $('#crearUsuarioForm').on('submit', function (e) {
+                e.preventDefault();  
+
+                if($('#ConfirmarClave').val() != $('#Clave').val()) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Las contraseñas no coinciden',
+                        icon: 'error'
+                    });
+                    return;
+                }
+
+                // Verificar si el usuario es Administrador y está intentando crear un SuperUsuario
+                if (!@Json.Serialize(User.IsInRole("SuperUsuario")) && $('#Rol').val() === '0') {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Solo el SuperUsuario puede crear usuarios con rol SuperUsuario',
+                        icon: 'error'
+                    });
+                    return;
+                }
+
+                const usuario = {
+                    nombre: $('#Nombre').val(),
+                    correo: $('#Correo').val(),
+                    rol: parseInt($('#Rol').val()),
+                    clave: $('#Clave').val(),
+                    empresaId: parseInt($('#EmpresaId').val())
+                };
+
+                $.ajax({
+                    url: '/api/Usuarios',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(usuario),
+                    success: function () {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Usuario creado correctamente',
+                            icon: 'success'
+                        }).then(() => {
+                            window.location.href = '/Usuario/Index';
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: xhr.responseJSON?.mensaje || 'Error al crear el usuario',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

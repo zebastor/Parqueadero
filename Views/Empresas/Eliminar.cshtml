@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Eliminar Empresa";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Eliminar Empresa</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <h4 class="alert-heading">¡Advertencia!</h4>
+                <p>¿Está seguro que desea eliminar esta empresa? Esta acción no se puede deshacer.</p>
+            </div>
+
+            <div class="mt-4">
+                <button id="btnEliminar" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const id = @ViewBag.Id;
+
+            $('#btnEliminar').click(function () {
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `/api/Empresas/${id}`,
+                            type: 'DELETE',
+                            success: function () {
+                                Swal.fire({
+                                    title: '¡Eliminado!',
+                                    text: 'La empresa ha sido eliminada correctamente',
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.href = '/Empresas/Index';
+                                });
+                            },
+                            error: function (xhr) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: xhr.responseJSON?.mensaje || 'Error al eliminar la empresa',
+                                    icon: 'error'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+} 

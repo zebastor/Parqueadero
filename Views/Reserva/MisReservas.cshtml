@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Mis Reservas y Pagos";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Mis Reservas y Pagos</h1>
+        <a asp-controller="Dashboard" asp-action="Cliente" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver al Dashboard
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="reservasTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Vehículo (Placa)</th>
+                            <th>Zona</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            const estadoReserva = {
+                0: 'Activa',
+                1: 'Finalizada',
+                2: 'Cancelada',
+                3: 'Reservada'
+            };
+
+            $('#reservasTable').DataTable({
+                ajax: {
+                    url: '/api/Reservas',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'vehiculo.placa' },
+                    {
+                        data: 'zona',
+                        render: function(data) {
+                            return data ? `${data.nombre} (${data.codigo || 'S/C'})` : 'N/A';
+                        }
+                    },
+                    { data: 'horaEntrada', render: function(data) { return data ? new Date(data).toLocaleString() : 'N/A'; } },
+                    { data: 'horaSalida', render: function(data) { return data ? new Date(data).toLocaleString() : 'Pendiente'; } },
+                    {
+                        data: 'estado',
+                        render: function(data) {
+                            let texto = estadoReserva[data] || 'Desconocido';
+                            let badge = 'badge-secondary';
+                            if (data === 0 || data === 3) badge = 'badge-success';
+                            if (data === 1) badge = 'badge-info';
+                            if (data === 2) badge = 'badge-danger';
+                            return `<span class="badge ${badge}">${texto}</span>`;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function(data, type, row) {
+                            const reciboId = row.cobro?.recibo?.id;
+
+                            if (row.estado === 0 || row.estado === 3) {
+                                return `
+                                    <button class="btn btn-success btn-sm btn-pagar" data-id="${data}">
+                                        <i class="fas fa-dollar-sign"></i> Pagar
+                                    </button>
+                                `;
+                            }
+                            if (row.estado === 1 && reciboId) {
+                                return `
+                                    <button class="btn btn-info btn-sm btn-ver-recibo" data-id="${reciboId}">
+                                        <i class="fas fa-receipt"></i> Ver Recibo
+                                    </button>
+                                `;
+                            }
+                            return 'N/A';
+                        }
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                }
+            });
+
+            // --- MANEJADOR DEL BOTÓN PAGAR ---
+            $('#reservasTable').on('click', '.btn-pagar', function() {
+                const reservaId = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Generar Pago',
+                    text: '¿Deseas pagar esta reserva ahora?',
+                    
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, pagar',
+                    cancelButtonText: 'Cancelar',
+                    html:
+                        '<input id="swal-descuento" class="swal2-input" placeholder="Código de descuento (opcional)">' +
+                        '<input id="swal-email" type="checkbox" checked> Enviar recibo por email'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const codigoDescuento = $('#swal-descuento').val();
+                        const enviarEmail = $('#swal-email').is(':checked');
+
+                        const cobroData = {
+                            codigoDescuento: codigoDescuento || null,
+                            enviarCorreo: enviarEmail
+                        };
+
+                        $.ajax({
+                            url: `/api/Cobros/GenerarCobro/${reservaId}`,
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(cobroData),
+                            success: function(recibo) {
+                                Swal.fire({
+                                   
+                                    title: '¡Pago Exitoso!',
+                                    text: `Total pagado: ${recibo.cobro.total}`,
+                                    // --- INICIO DE CORRECCIÓN ---
+                                    footer: `<a href="/api/Facturas/${recibo.id}/comprobante" target="_blank">Descargar PDF</a>` // Corregido a "Facturas"
+                                    // --- FIN DE CORRECCIÓN ---
+                                }).then(() => {
+                                    $('#reservasTable').DataTable().ajax.reload();
+                                });
+                            },
+                            error: function(xhr) {
+                                Swal.fire({ icon: 'error', title: 'Error en el pago', text: xhr.responseJSON.mensaje || 'Error desconocido' });
+                            }
+                        });
+                    }
+                });
+            });
+
+            // --- MANEJADOR DEL BOTÓN VER RECIBO ---
+            $('#reservasTable').on('click', '.btn-ver-recibo', function() {
+                const reciboId = $(this).data('id');
+                if (reciboId) {
+                    // --- INICIO DE CORRECCIÓN ---
+                    window.open(`/api/Facturas/${reciboId}/comprobante`, '_blank'); // Corregido a "Facturas"
+                    // --- FIN DE CORRECCIÓN ---
+                } else {
+                    Swal.fire('Error', 'Esta reserva no tiene un recibo asociado.', 'error');
+                }
+            });
+        });
+    </script>
+}

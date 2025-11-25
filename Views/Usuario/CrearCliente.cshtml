@@ -1,0 +1,257 @@
+@using Parqueadero.Models
+@model Usuario
+@{
+    ViewData["Title"] = "Crear Cliente";
+    // Obtener el valor de la empresa del usuario autenticado en el servidor
+    var empresaIdUsuario = User.FindFirst("EmpresaId")?.Value ?? "";
+    var empresaNombreUsuario = User.FindFirst("EmpresaNombre")?.Value ?? "";
+    // --- LÍNEAS DE DEPURACIÓN DEL SERVIDOR ---
+    var rolAdmin = User.IsInRole("Administrador");
+    var rolTrabajador = User.IsInRole("Trabajador");
+    var rolSuperUsuario = User.IsInRole("SuperUsuario");
+    var todasLasClaims = User.Claims.ToList(); // Obtener todas las claims para inspeccionar
+    // --- FIN LÍNEAS DE DEPURACIÓN ---
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 text-gray-800">Crear Cliente</h1>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form id="crearUsuarioForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Nombre">Nombre</label>
+                            <input asp-for="Nombre" class="form-control" required />
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Correo">Correo</label>
+                            <input asp-for="Correo" type="email" class="form-control" required />
+                            <span asp-validation-for="Correo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Clave">Contraseña</label>
+                            <input type="password" asp-for="Clave" class="form-control" required />
+                            <span asp-validation-for="Clave" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ConfirmarClave">Confirmar Contraseña</label>
+                            <input type="password" id="ConfirmarClave" class="form-control" required />
+                            <span id="ConfirmarClaveError" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campo para mostrar la empresa predeterminada si es Admin/Trabajador -->
+                @if (User.IsInRole("Administrador") || User.IsInRole("Trabajador"))
+                {
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Empresa (Predeterminada)</label>
+                                <!-- Mostrar la empresa del usuario autenticado como texto o input deshabilitado -->
+                                <input type="text" class="form-control" value="@empresaNombreUsuario" readonly />
+                                <!-- Opcional: Puedes usar un input oculto para enviar la ID -->
+                                <input type="hidden" id="EmpresaIdOculta" value="@empresaIdUsuario" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Selector para SuperUsuario o para permitir selección si es otro caso -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="EmpresaIdSelect">Empresa</label>
+                                <select class="form-control" id="EmpresaIdSelect" required>
+                                    <option value="">Cargando empresas...</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                }
+                
+                <input type="hidden" asp-for="Rol" value="3" />
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // --- LÍNEAS DE DEPURACIÓN DEL CLIENTE ---
+            console.log("Claims del servidor (Admin o Trab):", @Json.Serialize(User.IsInRole("Administrador") || User.IsInRole("Trabajador")));
+            console.log("Valor EmpresaId oculta (si aplica):", $('#EmpresaIdOculta').val());
+            console.log("Valor EmpresaId select (si aplica):", $('#EmpresaIdSelect').val());
+            // --- FIN LÍNEAS DE DEPURACIÓN ---
+
+            // Determinar si el usuario autenticado es Admin o Trabajador - USANDO @Json.Serialize
+            var esAdminOTrabajador = @Json.Serialize(User.IsInRole("Administrador") || User.IsInRole("Trabajador"));
+
+            // Cargar empresas solo si NO es Admin o Trabajador
+            if (!esAdminOTrabajador) {
+                $.get('/api/Empresas', function(empresas) {
+                    var select = $('#EmpresaIdSelect');
+                    select.empty();
+                    select.append($('<option></option>').val('').text('Seleccione una empresa'));
+                    $.each(empresas, function(index, empresa) {
+                        select.append($('<option></option>').val(empresa.id).text(empresa.nombre));
+                    });
+                });
+            }
+
+            $('#crearUsuarioForm').on('submit', function (e) {
+                e.preventDefault();  
+
+                if($('#ConfirmarClave').val() != $('#Clave').val()) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Las contraseñas no coinciden',
+                        icon: 'error'
+                    });
+                    return;
+                }
+
+                let empresaId;
+                if (esAdminOTrabajador) {
+                    // Usar la empresa del usuario autenticado
+                    empresaId = $('#EmpresaIdOculta').val(); // Obtener del input oculto
+                    console.log("Obteniendo empresaId del input oculto:", empresaId); // Depuración
+                    if (!empresaId || empresaId === "") { // Verificar también si es cadena vacía
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo determinar la empresa predeterminada.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+                    // Asegurarse de que sea un número entero para la API
+                    empresaId = parseInt(empresaId, 10);
+                    if (isNaN(empresaId)) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'La EmpresaId predeterminada no es un número válido.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+                } else {
+                    // Obtener la empresa seleccionada del select
+                    empresaId = $('#EmpresaIdSelect').val();
+                    console.log("Obteniendo empresaId del select:", empresaId); // Depuración
+                    if (!empresaId) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Por favor, seleccione una empresa.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+                    // Asegurarse de que sea un número entero para la API
+                    empresaId = parseInt(empresaId, 10);
+                    if (isNaN(empresaId)) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'La EmpresaId seleccionada no es un número válido.',
+                            icon: 'error'
+                        });
+                        return;
+                    }
+                }
+
+                console.log("empresaId final a usar (como número):", empresaId); // Depuración final
+
+                const usuario = {
+                    nombre: $('#Nombre').val(),
+                    correo: $('#Correo').val(),
+                    rol: 3, // Cliente
+                    clave: $('#Clave').val()
+                    // No se envía empresaId aquí, se maneja en UsuarioEmpresa
+                };
+
+                // --- LÍNEA DE DEPURACIÓN (opcional, puedes quitarla después) ---
+                console.log("Objeto usuario antes de JSON.stringify:", usuario);
+                // --- FIN LÍNEA DE DEPURACIÓN ---
+
+                $.ajax({
+                    url: '/api/Usuarios', // Endpoint para crear el usuario
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(usuario), // <-- CORREGIDO: Se añadió ''
+                    success: function (data) { // Recibe el usuario creado (data) que incluye el ID
+                        // Ahora crear la relación UsuarioEmpresa con la empresa correcta
+                        const usuarioId = data.id;
+                        console.log("ID del usuario creado:", usuarioId); // Depuración
+                        console.log("ID de la empresa a asociar (en fetch):", empresaId); // Depuración
+                        fetch(`/api/Usuarios/${usuarioId}/Empresa/${empresaId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                            // No se envía cuerpo aquí, lo cual es correcto para este endpoint
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                // Captura el error aquí y convierte el cuerpo de la respuesta a texto si no es JSON
+                                return response.text().then(text => {
+                                    console.error('Error en la respuesta de la API de Empresa:', response.status, text);
+                                    throw new Error(`Error al asociar cliente a empresa: ${response.status} - ${text}`);
+                                });
+                            }
+                            return response.json(); // Intenta parsear como JSON si la respuesta es correcta
+                        })
+                        .then(result => {
+                            Swal.fire({
+                                title: '¡Éxito!',
+                                text: 'Cliente creado y asociado a la empresa correctamente',
+                                icon: 'success'
+                            }).then(() => {
+                                window.location.href = '/Usuario/Index';
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error en la solicitud fetch para asociar empresa:', error);
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Cliente creado, pero hubo un error al asociarlo a la empresa: ' + error.message, // Muestra el mensaje de error detallado
+                                icon: 'warning' // Usamos warning porque el usuario sí se creó
+                            });
+                            // Opcional: Redirigir igual o mostrar botón para reintentar
+                            window.location.href = '/Usuario/Index';
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: xhr.responseJSON?.mensaje || 'Error al crear el cliente',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

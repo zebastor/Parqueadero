@@ -1,0 +1,132 @@
+@*  *@
+@{
+    ViewData["Title"] = "Generar Informe";
+}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Parámetros del Informe</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Generar" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Tipo de Informe</label>
+                                    <select name="Tipo" class="form-select" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="ingresos">Ingresos</option>
+                                        <option value="ocupacion">Ocupación</option>
+                                        <option value="vehiculos">Vehículos</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Formato de Salida</label>
+                                    <select name="Formato" class="form-select" required>
+                                        <option value="pdf">PDF (Documento Portátil)</option>
+                                        <option value="html">HTML (Vista Web)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Fecha Inicio</label>
+                                    <input name="FechaInicio" class="form-control" type="date" 
+                                           value="@DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd")" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label font-weight-bold">Fecha Fin</label>
+                                    <input name="FechaFin" class="form-control" type="date" 
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label font-weight-bold">Filtrar por Parqueadero (Opcional)</label>
+                            <input name="ParqueaderoId" class="form-control" type="number" min="1" 
+                                   placeholder="Dejar vacío para incluir todos los parqueaderos" />
+                            <small class="form-text text-muted">Si se deja vacío, se generará el informe consolidado de todas las sedes.</small>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-end">
+                            <a asp-controller="Dashboard" asp-action="SuperAdmin" class="btn btn-secondary me-2">
+                                <i class="fas fa-times fa-sm"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-download fa-sm text-white-50"></i> Generar Informe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tipos de Informes</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="small text-gray-500">Financiero</div>
+                        <span class="font-weight-bold">Informe de Ingresos</span>
+                        <p class="mb-0 small">Reporte detallado de ingresos por períodos, transacciones y tendencias financieras.</p>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <div class="small text-gray-500">Operativo</div>
+                        <span class="font-weight-bold">Informe de Ocupación</span>
+                        <p class="mb-0 small">Estadísticas de ocupación, reservas y utilización de espacios en el tiempo.</p>
+                    </div>
+                    <hr>
+                    <div class="mb-0">
+                        <div class="small text-gray-500">Estadístico</div>
+                        <span class="font-weight-bold">Informe de Vehículos</span>
+                        <p class="mb-0 small">Análisis de tipos de vehículos, frecuencia y distribución por zonas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fechaInicio = document.querySelector('input[name="FechaInicio"]');
+            const fechaFin = document.querySelector('input[name="FechaFin"]');
+
+            fechaInicio.addEventListener('change', function() {
+                if (fechaFin.value && new Date(fechaInicio.value) > new Date(fechaFin.value)) {
+                    fechaFin.value = fechaInicio.value;
+                }
+            });
+
+            fechaFin.addEventListener('change', function() {
+                if (fechaInicio.value && new Date(fechaFin.value) < new Date(fechaInicio.value)) {
+                    alert('La fecha fin no puede ser anterior a la fecha inicio');
+                    fechaFin.value = fechaInicio.value;
+                }
+            });
+        });
+    </script>
+}

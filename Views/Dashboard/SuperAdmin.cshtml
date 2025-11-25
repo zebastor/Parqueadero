@@ -1,0 +1,112 @@
+@{
+    ViewData["Title"] = "Dashboard Super Admin";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-5 text-gray-900 font-weight-bold border-bottom pb-2">Panel de Control Global 🌍</h1>
+
+    <div class="row">
+
+        <div class="col-xl-4 col-md-12 mb-4">
+            <div class="card bg-primary text-white shadow-lg h-100 border-0">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-white text-uppercase mb-1 opacity-75">
+                                Total de Entidades (Sistema)
+                            </div>
+                            <div class="h1 mb-0 font-weight-bold">@ViewBag.EmpresasCount</div>
+                            <div class="text-lg mt-2">Empresas Activas</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-building fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 py-3 text-right">
+                    <a asp-controller="Empresas" asp-action="Index" class="btn btn-primary btn-icon-split shadow-sm">
+                        <span class="icon text-white-50"><i class="fas fa-hammer"></i></span>
+                        <span class="text">Gestionar Empresas</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-12 mb-4">
+            <div class="card bg-success text-white shadow-lg h-100 border-0">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-white text-uppercase mb-1 opacity-75">
+                                Activos Operacionales
+                            </div>
+                            <div class="h1 mb-0 font-weight-bold">@ViewBag.ParqueaderosCount</div>
+                            <div class="text-lg mt-2">Parqueaderos Registrados</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-parking fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 py-3 text-right">
+                    <a asp-controller="Parqueaderos" asp-action="Index" class="btn btn-success btn-icon-split shadow-sm">
+                        <span class="icon text-white-50"><i class="fas fa-cogs"></i></span>
+                        <span class="text">Gestionar Parqueaderos</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-12 mb-4">
+            <div class="card bg-info text-white shadow-lg h-100 border-0">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-white text-uppercase mb-1 opacity-75">
+                                Capital Humano
+                            </div>
+                            <div class="h1 mb-0 font-weight-bold">@ViewBag.UsuariosCount</div>
+                            <div class="text-lg mt-2">Usuarios en el Sistema</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 py-3 text-right">
+                    <a asp-controller="Usuario" asp-action="Index" class="btn btn-info btn-icon-split shadow-sm">
+                        <span class="icon text-white-50"><i class="fas fa-user-shield"></i></span>
+                        <span class="text">Gestionar Usuarios</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-4 col-md-12 mb-4">
+            <div class="card bg-warning text-white shadow-lg h-100 border-0">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-white text-uppercase mb-1 opacity-75">
+                                Reportes y Análisis
+                            </div>
+                            <div class="h1 mb-0 font-weight-bold">Informes</div>
+                            <div class="text-lg mt-2">Generación de Reportes</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-bar fa-4x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 py-3 text-right">
+                    <a asp-controller="Informes" asp-action="Index" class="btn btn-warning btn-icon-split shadow-sm">
+                        <span class="icon text-white-50"><i class="fas fa-file-alt"></i></span>
+                        <span class="text">Ver Informes</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,145 @@
+@{
+    Layout = "_LayoutAuth";
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5 col-xl-4">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header bg-white border-0 text-center pt-4">
+                <div class="mb-3">
+                    <i class="fas fa-user-circle fa-4x text-primary"></i>
+                </div>
+                <h3 class="font-weight-light my-2">Bienvenido</h3>
+                <p class="text-muted small">Sistema de Gestión de Parqueaderos</p>
+            </div>
+
+            <div class="card-body px-4 py-4">
+                <form method="post" asp-controller="Autenticacion" asp-action="Login">
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i> @ViewBag.Error
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                        <label for="email"><i class="fas fa-envelope me-1"></i> Correo electrónico</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <label for="password"><i class="fas fa-lock me-1"></i> Contraseña</label>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            Ingresar <i class="fas fa-sign-in-alt ms-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-footer text-center py-3 bg-light border-0 rounded-bottom">
+                <div class="small">
+                    <span class="text-muted">¿No tienes una cuenta?</span>
+                    <button type="button" class="btn btn-link text-decoration-none fw-bold" data-bs-toggle="modal" data-bs-target="#registroClienteModal">
+                        Regístrate aquí
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="registroClienteModal" tabindex="-1" aria-labelledby="registroClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="registroClienteModalLabel">
+                    <i class="fas fa-user-plus me-2"></i> Crear Cuenta Cliente
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="registroClienteForm">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="nombreCliente" name="nombreCliente" placeholder="Nombre" required>
+                        <label for="nombreCliente">Nombre Completo</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="correoCliente" name="correoCliente" placeholder="Correo" required>
+                        <label for="correoCliente">Correo Electrónico</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="claveCliente" name="claveCliente" placeholder="Contraseña" required>
+                        <label for="claveCliente">Contraseña</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" id="confirmarClaveCliente" name="confirmarClaveCliente" placeholder="Confirmar" required>
+                        <label for="confirmarClaveCliente">Confirmar Contraseña</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light border-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary px-4" id="btnRegistrarCliente">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnRegistrarCliente').addEventListener('click', async function() {
+        const confirmarClave = document.getElementById('confirmarClaveCliente').value;
+        const clave = document.getElementById('claveCliente').value;
+
+        if (confirmarClave !== clave) {
+            // Usamos una alerta nativa, pero podrías usar SweetAlert si ya lo tienes instalado
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+
+        const cliente = {
+            nombre: document.getElementById('nombreCliente').value,
+            correo: document.getElementById('correoCliente').value,
+            rol: 3, // Cliente
+            clave: clave
+        };
+
+        // Mostrar indicador de carga en el botón (opcional pero recomendado)
+        const btn = this;
+        const originalText = btn.innerText;
+        btn.innerText = 'Procesando...';
+        btn.disabled = true;
+
+        try {
+           const response = await fetch('/api/Registro/Cliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cliente)
+            });
+
+            if (response.ok) {
+                alert('Cliente registrado exitosamente');
+                document.getElementById('registroClienteForm').reset();
+                // Cerrar modal
+                var myModalEl = document.getElementById('registroClienteModal');
+                var modal = bootstrap.Modal.getInstance(myModalEl);
+                modal.hide();
+            } else {
+                const error = await response.json();
+                alert('Error: ' + (error.mensaje || 'No se pudo registrar el cliente'));
+            }
+        } catch (error) {
+            alert('Error de conexión: ' + error.message);
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
